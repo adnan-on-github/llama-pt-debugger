@@ -1,0 +1,27 @@
+# ============================================================
+# Serving requirements (Gradio UI + FastAPI REST API)
+# Install: pip install -r requirements/requirements-serve.txt
+# ============================================================
+
+# --- REST API ---
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.8.0
+
+# --- Gradio UI ---
+gradio>=4.42.0
+
+# --- Model loading (inference only — no training deps needed) ---
+torch>=2.3.0
+transformers>=4.45.0
+peft>=0.13.0
+accelerate>=0.34.0
+
+# --- Evaluation ---
+evaluate>=0.4.2
+rouge_score>=0.1.2
+
+# --- Utilities ---
+pyyaml>=6.0
+numpy>=1.26.0
+tqdm>=4.66.0

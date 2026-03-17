@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pt-debugger-config
+  namespace: pt-debugger
+  labels:
+    app: pt-debugger
+data:
+  # Base model identifier (HuggingFace Hub or PVC-mounted path)
+  MODEL_PATH: "meta-llama/Meta-Llama-3.1-8B-Instruct"
+  # Path inside the container where the LoRA adapter is mounted
+  ADAPTER_PATH: "/model/adapter"
+  # Target device: auto | hpu | cuda | cpu
+  DEVICE: "hpu"
+  # Max new tokens per generation request
+  MAX_NEW_TOKENS: "400"
+  # REST API port
+  API_PORT: "8000"
+  # Gradio UI port
+  GRADIO_PORT: "7860"
+  # HuggingFace cache directory (mapped to PVC in deployment)
+  TRANSFORMERS_CACHE: "/model/hf_cache"
+  HF_HOME: "/model/hf_cache"

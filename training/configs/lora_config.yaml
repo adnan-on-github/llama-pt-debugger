@@ -1,0 +1,69 @@
+# LoRA configuration for LLaMA-3.1-8B fine-tuning
+# Used by training/train.py
+
+lora:
+  # Adapter rank — higher = more capacity, more VRAM
+  r: 16
+  # LoRA scaling factor (alpha / r = effective LR multiplier)
+  lora_alpha: 32
+  # Dropout applied to LoRA layers (regularisation)
+  lora_dropout: 0.05
+  # Bias mode: "none" recommended for causal LM fine-tuning
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  # Inject LoRA into all attention + FFN projection layers
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+  # Do not inject into embedding layers (saves VRAM)
+  modules_to_save: []
+  # Merge adapter into base weights at inference (set True for single-model serving)
+  merge_weights: false
+
+training:
+  model_name_or_path: "meta-llama/Meta-Llama-3.1-8B-Instruct"
+  output_dir:         "outputs/llama-pt-debugger"
+  # Data
+  train_file: "data/datasets/train.jsonl"
+  val_file:   "data/datasets/val.jsonl"
+  dataset_text_field: "text"
+  max_seq_length: 2048
+  # Optimisation
+  num_train_epochs: 3
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size:  2
+  gradient_accumulation_steps: 8   # effective batch = 2 * 8 * n_gpus
+  learning_rate: 2.0e-4
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  # Precision
+  bf16: true
+  fp16: false
+  # Memory
+  gradient_checkpointing: true
+  # Packing: concatenate short samples into 2048-token chunks for efficiency
+  packing: true
+  # Evaluation
+  eval_strategy: "steps"
+  eval_steps: 200
+  save_strategy: "steps"
+  save_steps: 200
+  save_total_limit: 3
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  # Logging
+  logging_steps: 10
+  report_to:
+    - "tensorboard"
+    - "wandb"
+  run_name: "llama-pt-debugger-lora"
+  # Tokenizer
+  pad_token: "eos"        # use eos as pad for causal LM
+  truncation_side: "left" # keep the most recent portion if too long

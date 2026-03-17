@@ -1,0 +1,41 @@
+# ============================================================
+# NVIDIA GPU training requirements
+# Install: pip install -r requirements/requirements-nvidia.txt
+# ============================================================
+
+# --- Core framework ---
+torch>=2.3.0
+transformers>=4.45.0
+accelerate>=0.34.0
+datasets>=2.21.0
+
+# --- LoRA / PEFT ---
+peft>=0.13.0
+
+# --- Supervised fine-tuning ---
+trl>=0.11.0
+
+# --- DeepSpeed ZeRO-3 ---
+deepspeed>=0.15.0
+
+# --- Efficient attention (A100/H100) ---
+flash-attn>=2.6.0; platform_machine == "x86_64"
+
+# --- Quantization (optional — not used with ZeRO-3 but useful for local inference) ---
+bitsandbytes>=0.44.0
+
+# --- Data & evaluation ---
+evaluate>=0.4.2
+rouge_score>=0.1.2
+
+# --- LLM API client for augmentation ---
+openai>=1.40.0
+
+# --- Config & utilities ---
+pyyaml>=6.0
+tqdm>=4.66.0
+numpy>=1.26.0
+
+# --- Logging ---
+wandb>=0.17.0
+tensorboard>=2.17.0

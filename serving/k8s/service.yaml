@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pt-debugger-api
+  namespace: pt-debugger
+  labels:
+    app: pt-debugger
+    component: api
+  annotations:
+    # Uncomment for internal load-balancer annotation on GKE/EKS/AKS:
+    # cloud.google.com/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  selector:
+    app: pt-debugger
+  ports:
+    - name: api
+      port: 8000
+      targetPort: api
+      protocol: TCP
+    - name: gradio
+      port: 7860
+      targetPort: gradio
+      protocol: TCP
+---
+# Internal ClusterIP for pod-to-pod communication within the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: pt-debugger-internal
+  namespace: pt-debugger
+  labels:
+    app: pt-debugger
+    component: internal
+spec:
+  type: ClusterIP
+  selector:
+    app: pt-debugger
+  ports:
+    - name: api
+      port: 8000
+      targetPort: api
+      protocol: TCP
+    - name: gradio
+      port: 7860
+      targetPort: gradio
+      protocol: TCP

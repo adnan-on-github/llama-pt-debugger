@@ -1,0 +1,44 @@
+# ============================================================
+# Gaudi2 HPU training requirements
+# Install: pip install -r requirements/requirements-gaudi2.txt
+#
+# Prerequisites (installed separately from Habana vault):
+#   habana-torch   — matches your SynapseAI driver version
+#   habana-horovod — optional, for MPI-based distributed
+#
+# See: https://docs.habana.ai/en/latest/Installation_Guide/
+# ============================================================
+
+# --- optimum-habana (provides GaudiSFTTrainer, GaudiConfig, etc.) ---
+optimum-habana>=1.13.0
+
+# --- Core transformers stack (CPU-only torch is OK; HPU torch comes from Habana vault) ---
+transformers>=4.45.0
+accelerate>=0.34.0
+datasets>=2.21.0
+
+# --- LoRA / PEFT ---
+peft>=0.13.0
+
+# --- Supervised fine-tuning ---
+trl>=0.11.0
+
+# --- DeepSpeed — Habana-specific build is installed by the driver;
+#     install the base package here for the Python config API ---
+deepspeed>=0.15.0
+
+# --- Data & evaluation ---
+evaluate>=0.4.2
+rouge_score>=0.1.2
+
+# --- LLM API client for augmentation ---
+openai>=1.40.0
+
+# --- Config & utilities ---
+pyyaml>=6.0
+tqdm>=4.66.0
+numpy>=1.26.0
+
+# --- Logging ---
+wandb>=0.17.0
+tensorboard>=2.17.0
